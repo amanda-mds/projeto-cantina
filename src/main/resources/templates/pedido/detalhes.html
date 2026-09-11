@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Pedido</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1 th:text="${'Pedido #' + pedido.id}"></h1>
+
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <p><strong>Status:</strong> <span th:text="${pedido.status.descricao}"></span></p>
+        <p><strong>Tipo:</strong> <span th:text="${pedido.tipoPedido.descricao}"></span></p>
+        <p><strong>Total:</strong>
+            <span th:text="${'R$ ' + #numbers.formatDecimal(pedido.valorTotal, 1, 2)}"></span>
+        </p>
+    </div>
+
+    <div class="card" th:if="${pedido.status.name() == 'AGUARDANDO_PAGAMENTO'}">
+        <h2>Adicionar produto</h2>
+        <form th:action="@{/pedido/{id}/item/adicionar(id=${pedido.id})}" method="post">
+            <label for="produtoId">Produto</label>
+            <select id="produtoId" name="produtoId" required>
+                <option value="" th:if="${#lists.size(produtos) > 1}">
+                    Selecione
+                </option>
+
+                <option th:each="produto : ${produtos}"
+                        th:value="${produto.id}"
+                        th:text="${produto.nome + ' - R$ ' + #numbers.formatDecimal(produto.precoVenda, 1, 2)}"
+                        th:selected="${#lists.size(produtos) == 1}">
+                </option>
+            </select>
+
+            <label for="quantidade">Quantidade</label>
+            <input id="quantidade" name="quantidade" type="number" min="1" value="1" required>
+
+            <button type="submit">Adicionar</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Itens</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+                <th>Subtotal</th>
+                <th th:if="${pedido.status.name() == 'AGUARDANDO_PAGAMENTO'}">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${pedido.itens}">
+                <td th:text="${item.produto.nome}"></td>
+                <td th:text="${item.quantidade}"></td>
+                <td th:text="${'R$ ' + #numbers.formatDecimal(item.precoUnitario, 1, 2)}"></td>
+                <td th:text="${'R$ ' + #numbers.formatDecimal(item.subtotal, 1, 2)}"></td>
+                <td th:if="${pedido.status.name() == 'AGUARDANDO_PAGAMENTO'}">
+                    <form class="inline-form"
+                          th:action="@{/pedido/{id}/item/{itemId}/quantidade(id=${pedido.id}, itemId=${item.id})}"
+                          method="post">
+                        <input name="quantidade" type="number" min="1" th:value="${item.quantidade}">
+                        <button type="submit">Atualizar</button>
+                    </form>
+
+                    <form class="inline-form"
+                          th:action="@{/pedido/{id}/item/{itemId}/remover(id=${pedido.id}, itemId=${item.id})}"
+                          method="post">
+                        <button class="btn-danger" type="submit">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="actions" th:if="${pedido.status.name() == 'AGUARDANDO_PAGAMENTO'}">
+            <form th:action="@{/pedido/{id}/confirmar(id=${pedido.id})}" method="post">
+                <button type="submit">Confirmar pedido</button>
+            </form>
+
+            <form th:action="@{/pedido/{id}/cancelar(id=${pedido.id})}" method="post">
+                <button class="btn-danger" type="submit">Cancelar pedido</button>
+            </form>
+        </div>
+
+        <div class="actions">
+            <a class="btn btn-light" th:href="@{/pedido/meus}">Meus pedidos</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

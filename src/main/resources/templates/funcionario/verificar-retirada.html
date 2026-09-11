@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Verificar retirada</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1>Verificar retirada</h1>
+
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <form method="get" th:action="@{/funcionario/verificar}">
+            <label for="codigo">Código de retirada</label>
+            <input id="codigo" name="codigo" th:value="${codigoInformado}" type="text">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <div class="card" th:if="${pedido}">
+        <h2 th:text="${'Pedido #' + pedido.id}"></h2>
+        <p><strong>Cliente:</strong> <span th:text="${pedido.usuario.nome}"></span></p>
+        <p><strong>Status:</strong> <span th:text="${pedido.status.descricao}"></span></p>
+
+        <form th:if="${pedido.status.name() == 'PRONTO'}"
+              th:action="@{/funcionario/verificar/{id}/retirar(id=${pedido.id})}"
+              method="post">
+            <button type="submit">Confirmar retirada</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

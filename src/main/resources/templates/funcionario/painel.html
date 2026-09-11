@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Painel do funcionário</title>
+</head>
+<body>
+<header>
+    <div class="wrap">
+        <div class="brand">APPetite - Funcionário</div>
+        <nav>
+            <a th:href="@{/funcionario}">Pedidos</a>
+            <a th:href="@{/funcionario/verificar}">Verificar retirada</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="card">
+        <h1>Pedidos</h1>
+
+        <form method="get" th:action="@{/funcionario}" class="grid grid-2">
+            <div>
+                <label>Status</label>
+                <select name="status">
+                    <option value="">Todos</option>
+                    <option th:each="status : ${statusList}"
+                            th:value="${status}"
+                            th:text="${status.descricao}"
+                            th:selected="${status == filtroStatus}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label>Tipo</label>
+                <select name="tipoPedido">
+                    <option value="">Todos</option>
+                    <option th:each="tipo : ${tiposPedido}"
+                            th:value="${tipo}"
+                            th:text="${tipo.descricao}"
+                            th:selected="${tipo == filtroTipo}">
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit">Filtrar</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td th:text="${pedido.id}"></td>
+                <td th:text="${pedido.usuario.nome}"></td>
+                <td th:text="${pedido.tipoPedido.descricao}"></td>
+                <td th:text="${pedido.status.descricao}"></td>
+                <td th:text="${'R$ ' + #numbers.formatDecimal(pedido.valorTotal, 1, 2)}"></td>
+                <td><a class="btn" th:href="@{/funcionario/pedido/{id}(id=${pedido.id})}">Abrir</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

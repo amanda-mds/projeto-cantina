@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Novo pedido</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1>Novo pedido</h1>
+
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <form th:action="@{/pedido/novo}" th:object="${pedido}" method="post">
+            <label for="tipoPedido">Tipo do pedido</label>
+            <select id="tipoPedido" th:field="*{tipoPedido}">
+                <option th:each="tipo : ${tiposPedido}"
+                        th:value="${tipo}"
+                        th:text="${tipo.descricao}">
+                </option>
+            </select>
+
+            <label for="horarioRetirada">Horário de retirada</label>
+            <input id="horarioRetirada"
+                   th:field="*{horarioRetirada}"
+                   type="datetime-local">
+
+            <label for="observacao">Observação</label>
+            <textarea id="observacao" th:field="*{observacao}"></textarea>
+
+            <button type="submit">Iniciar pedido</button>
+        </form>
+
+        <p><a th:href="@{/cardapio}">Voltar ao cardápio</a></p>
+    </div>
+</main>
+</body>
+</html>

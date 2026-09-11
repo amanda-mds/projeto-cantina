@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Detalhes do pagamento</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1 th:text="${'Pagamento #' + pagamento.id}"></h1>
+
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <p><strong>Status:</strong> <span th:text="${pagamento.status.descricao}"></span></p>
+        <p><strong>Forma:</strong> <span th:text="${pagamento.formaPagamento.descricao}"></span></p>
+        <p><strong>Valor:</strong>
+            <span th:text="${'R$ ' + #numbers.formatDecimal(pagamento.valor, 1, 2)}"></span>
+        </p>
+        <p><strong>Código da transação:</strong>
+            <span th:text="${pagamento.codigoTransacao}"></span>
+        </p>
+        <p th:if="${pedido.codigoRetirada}">
+            <strong>Código de retirada:</strong>
+            <span th:text="${pedido.codigoRetirada}"></span>
+        </p>
+
+        <div class="actions" th:if="${pagamento.status.name() == 'PENDENTE'}">
+            <form th:action="@{/pagamento/{id}/aprovar(id=${pagamento.id})}" method="post">
+                <button type="submit">Aprovar pagamento</button>
+            </form>
+
+            <form th:action="@{/pagamento/{id}/cancelar(id=${pagamento.id})}" method="post">
+                <button class="btn-danger" type="submit">Cancelar</button>
+            </form>
+        </div>
+
+        <p><a th:href="@{/pedido/meus}">Voltar aos pedidos</a></p>
+    </div>
+</main>
+</body>
+</html>

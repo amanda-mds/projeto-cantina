@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>APPetite</title>
+</head>
+<body>
+<header>
+    <div class="wrap">
+        <div class="brand">APPetite</div>
+        <nav>
+            <a th:href="@{/cardapio}">Cardápio</a>
+            <a th:href="@{/login}">Entrar</a>
+            <a th:href="@{/cadastro}">Cadastrar</a>
+        </nav>
+    </div>
+</header>
+<main>
+    <div class="card">
+        <h1>Cantina APPetite</h1>
+        <p>Sistema de pedidos, pagamentos e controle de estoque.</p>
+        <div class="actions">
+            <a class="btn" th:href="@{/cardapio}">Ver cardápio</a>
+            <a class="btn btn-secondary" th:href="@{/login}">Entrar</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

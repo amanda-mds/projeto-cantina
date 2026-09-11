@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Painel do Gerente</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+
+<body>
+
+<header>
+    <div class="wrap">
+        <div class="brand">APPetite - Gerente</div>
+
+        <nav>
+            <a th:href="@{/gerente}">Painel</a>
+            <a th:href="@{/gerente/produtos}">Produtos</a>
+            <a th:href="@{/gerente/usuarios}">Usuários</a>
+            <a th:href="@{/funcionario}">Pedidos</a>
+
+            <form th:action="@{/logout}" method="post" class="inline-form">
+                <button type="submit">Sair</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+    <div class="card">
+        <h1>Painel do Gerente</h1>
+        <p>Bem-vindo ao gerenciamento da cantina.</p>
+    </div>
+
+    <div class="grid grid-3">
+
+        <div class="card">
+            <h2>Produtos</h2>
+            <div class="stat" th:text="${quantidadeProdutos}">0</div>
+        </div>
+
+        <div class="card">
+            <h2>Pedidos</h2>
+            <div class="stat" th:text="${quantidadePedidos}">0</div>
+        </div>
+
+        <div class="card">
+            <h2>Usuários</h2>
+            <div class="stat" th:text="${quantidadeUsuarios}">0</div>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <h2>Acessos rápidos</h2>
+
+        <div class="actions">
+            <a class="btn" th:href="@{/gerente/produtos}">
+                Gerenciar produtos
+            </a>
+
+            <a class="btn btn-secondary" th:href="@{/gerente/usuarios}">
+                Gerenciar usuários
+            </a>
+
+            <a class="btn" th:href="@{/funcionario}">
+                Ver pedidos
+            </a>
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>

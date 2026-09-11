@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Estoque</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1 th:text="${'Estoque - ' + produto.nome}"></h1>
+
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <p><strong>Saldo atual:</strong> <span th:text="${produto.estoqueAtual}"></span></p>
+        <p><strong>Estoque mínimo:</strong> <span th:text="${produto.estoqueMinimo}"></span></p>
+    </div>
+
+    <div class="grid grid-3">
+        <div class="card">
+            <h2>Entrada</h2>
+            <form th:action="@{/gerente/estoque/{id}/entrada(id=${produto.id})}" method="post">
+                <label>Quantidade</label>
+                <input name="quantidade" type="number" min="1" required>
+                <label>Observação</label>
+                <textarea name="observacao"></textarea>
+                <button type="submit">Registrar entrada</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Perda</h2>
+            <form th:action="@{/gerente/estoque/{id}/perda(id=${produto.id})}" method="post">
+                <label>Quantidade</label>
+                <input name="quantidade" type="number" min="1" required>
+                <label>Observação</label>
+                <textarea name="observacao"></textarea>
+                <button type="submit">Registrar perda</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Ajuste</h2>
+            <form th:action="@{/gerente/estoque/{id}/ajuste(id=${produto.id})}" method="post">
+                <label>Novo saldo</label>
+                <input name="novoSaldo" type="number" min="0" required>
+                <label>Observação</label>
+                <textarea name="observacao"></textarea>
+                <button type="submit">Ajustar estoque</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Movimentações</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Motivo</th>
+                <th>Qtd.</th>
+                <th>Antes</th>
+                <th>Depois</th>
+                <th>Observação</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="mov : ${movimentacoes}">
+                <td th:text="${#temporals.format(mov.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${mov.tipo.descricao}"></td>
+                <td th:text="${mov.motivo.descricao}"></td>
+                <td th:text="${mov.quantidade}"></td>
+                <td th:text="${mov.saldoAnterior}"></td>
+                <td th:text="${mov.saldoAtual}"></td>
+                <td th:text="${mov.observacao}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p><a th:href="@{/gerente/produtos}">Voltar aos produtos</a></p>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Detalhes do Pedido</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/estilo.css}">
+</head>
+
+<body>
+
+<main>
+
+    <div class="card">
+
+        <h1 th:text="${'Pedido #' + pedido.id}">
+            Pedido
+        </h1>
+
+        <div class="alert alert-success"
+             th:if="${sucesso}"
+             th:text="${sucesso}">
+        </div>
+
+        <div class="alert alert-error"
+             th:if="${erro}"
+             th:text="${erro}">
+        </div>
+
+        <p>
+            <strong>Cliente:</strong>
+
+            <span th:text="${pedido.usuario.nome}">
+                Cliente
+            </span>
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+
+            <span th:text="${pedido.status.descricao}">
+                Status
+            </span>
+        </p>
+
+        <p>
+            <strong>Tipo:</strong>
+
+            <span th:text="${pedido.tipoPedido.descricao}">
+                Tipo
+            </span>
+        </p>
+
+        <p th:if="${pedido.codigoRetirada != null}">
+            <strong>Código de retirada:</strong>
+
+            <span th:text="${pedido.codigoRetirada}">
+            </span>
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Itens do pedido</h2>
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+                <th>Subtotal</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:each="item : ${pedido.itens}">
+
+                <td th:text="${item.produto.nome}">
+                    Produto
+                </td>
+
+                <td th:text="${item.quantidade}">
+                    1
+                </td>
+
+                <td th:text="${'R$ ' + #numbers.formatDecimal(item.precoUnitario, 1, 2)}">
+                    R$ 0,00
+                </td>
+
+                <td th:text="${'R$ ' + #numbers.formatDecimal(item.subtotal, 1, 2)}">
+                    R$ 0,00
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="card"
+         th:if="${pagamento != null}">
+
+        <h2>Pagamento</h2>
+
+        <p>
+            <strong>Status:</strong>
+
+            <span th:text="${pagamento.status.descricao}">
+                Status
+            </span>
+        </p>
+
+        <p>
+            <strong>Forma de pagamento:</strong>
+
+            <span th:text="${pagamento.formaPagamento.descricao}">
+                Forma
+            </span>
+        </p>
+
+        <p>
+            <strong>Valor:</strong>
+
+            <span th:text="${'R$ ' + #numbers.formatDecimal(pagamento.valor, 1, 2)}">
+                R$ 0,00
+            </span>
+        </p>
+
+        <form th:if="${pagamento.status.name() == 'PENDENTE'}"
+              th:action="@{/pagamento/{id}/aprovar(id=${pagamento.id})}"
+              method="post">
+
+            <button type="submit">
+                Confirmar pagamento
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="card"
+         th:if="${pagamento == null && pedido.status.name() == 'AGUARDANDO_PAGAMENTO'}">
+
+        <p>
+            Este pedido ainda está aguardando o cliente iniciar o pagamento.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Ações do pedido</h2>
+
+        <div class="actions">
+
+            <form th:if="${pedido.status.name() == 'PAGO'}"
+                  th:action="@{/funcionario/pedido/{id}/preparar(id=${pedido.id})}"
+                  method="post">
+
+                <button type="submit">
+                    Iniciar preparo
+                </button>
+
+            </form>
+
+
+            <form th:if="${pedido.status.name() == 'EM_PREPARO'}"
+                  th:action="@{/funcionario/pedido/{id}/pronto(id=${pedido.id})}"
+                  method="post">
+
+                <button type="submit">
+                    Marcar como pronto
+                </button>
+
+            </form>
+
+
+            <form th:if="${pedido.status.name() == 'PRONTO'}"
+                  th:action="@{/funcionario/pedido/{id}/retirar(id=${pedido.id})}"
+                  method="post">
+
+                <button type="submit">
+                    Confirmar retirada
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div th:if="${pedido.status.name() == 'AGUARDANDO_PAGAMENTO'}">
+
+            <p>
+                O pedido precisa ter o pagamento aprovado antes de iniciar o preparo.
+            </p>
+
+        </div>
+
+
+        <div th:if="${pedido.status.name() == 'RETIRADO'}">
+
+            <p>
+                Pedido finalizado e retirado.
+            </p>
+
+        </div>
+
+
+        <div th:if="${pedido.status.name() == 'CANCELADO'}">
+
+            <p>
+                Pedido cancelado.
+            </p>
+
+        </div>
+
+
+        <div class="actions">
+
+            <a class="btn btn-light"
+               th:href="@{/funcionario}">
+                Voltar
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

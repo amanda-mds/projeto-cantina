@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Erro</title>
+</head>
+<body>
+<main class="auth">
+    <div class="card">
+        <h1>Não foi possível concluir a operação</h1>
+        <div class="alert alert-error"
+             th:text="${mensagemErro != null ? mensagemErro : 'Ocorreu um erro no sistema.'}">
+        </div>
+        <a class="btn btn-light" href="javascript:history.back()">Voltar</a>
+        <a class="btn" th:href="@{/}">Início</a>
+    </div>
+</main>
+</body>
+</html>

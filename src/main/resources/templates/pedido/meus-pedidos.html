@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Meus pedidos</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1>Meus pedidos</h1>
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td th:text="${pedido.id}"></td>
+                <td th:text="${#temporals.format(pedido.dataHoraPedido, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${pedido.tipoPedido.descricao}"></td>
+                <td th:text="${pedido.status.descricao}"></td>
+                <td th:text="${'R$ ' + #numbers.formatDecimal(pedido.valorTotal, 1, 2)}"></td>
+                <td><a class="btn" th:href="@{/pedido/{id}(id=${pedido.id})}">Abrir</a></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <a class="btn" th:href="@{/pedido/novo}">Novo pedido</a>
+            <a class="btn btn-light" th:href="@{/cardapio}">Cardápio</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

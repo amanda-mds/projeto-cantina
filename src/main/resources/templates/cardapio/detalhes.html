@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Produto - APPetite</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1 th:text="${produto.nome}"></h1>
+        <p th:text="${produto.descricao}"></p>
+        <p th:text="${'Categoria: ' + produto.categoria.descricao}"></p>
+        <p class="price"
+           th:text="${'R$ ' + #numbers.formatDecimal(produto.precoVenda, 1, 2)}"></p>
+        <p th:text="${'Estoque disponível: ' + produto.estoqueAtual}"></p>
+
+        <div class="actions">
+            <a class="btn btn-light" th:href="@{/cardapio}">Voltar</a>
+            <a class="btn" th:href="@{/pedido/novo}">Criar pedido</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

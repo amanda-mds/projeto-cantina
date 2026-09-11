@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Login - APPetite</title>
+</head>
+<body>
+<main class="auth">
+    <div class="card">
+        <h1>Entrar</h1>
+        <div class="alert alert-error" th:if="${param.erro}">
+            Usuário ou senha inválidos.
+        </div>
+        <div class="alert alert-success" th:if="${param.logout}">
+            Você saiu do sistema.
+        </div>
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+
+        <form th:action="@{/login}" method="post">
+            <label for="username">Nome ou e-mail</label>
+            <input id="username" name="username" type="text" required>
+
+            <label for="password">Senha</label>
+            <input id="password" name="password" type="password" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+
+        <p><a th:href="@{/cadastro}">Criar conta</a></p>
+        <p><a th:href="@{/}">Voltar</a></p>
+    </div>
+</main>
+</body>
+</html>

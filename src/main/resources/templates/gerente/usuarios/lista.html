@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Usuários</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1>Usuários</h1>
+
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <a class="btn" th:href="@{/gerente/usuarios/novo}">Novo funcionário</a>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Tipo</th>
+                <th>Ativo</th>
+                <th>Ação</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.nome}"></td>
+                <td th:text="${usuario.email}"></td>
+                <td th:text="${usuario.tipoUsuario.descricao}"></td>
+                <td th:text="${usuario.ativo ? 'Sim' : 'Não'}"></td>
+                <td>
+                    <form th:action="@{/gerente/usuarios/{id}/status(id=${usuario.id})}" method="post">
+                        <input type="hidden" name="ativo" th:value="${!usuario.ativo}">
+                        <button type="submit"
+                                th:text="${usuario.ativo ? 'Desativar' : 'Ativar'}"></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p><a th:href="@{/gerente}">Voltar</a></p>
+    </div>
+</main>
+</body>
+</html>

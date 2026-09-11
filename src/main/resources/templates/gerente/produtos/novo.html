@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Novo produto</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1>Novo produto</h1>
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <form th:action="@{/gerente/produtos/novo}" th:object="${produto}" method="post">
+            
+<label for="nome">Nome</label>
+<input id="nome" th:field="*{nome}" type="text">
+
+<label for="descricao">Descrição</label>
+<textarea id="descricao" th:field="*{descricao}"></textarea>
+
+<label for="categoria">Categoria</label>
+<select id="categoria" th:field="*{categoria}">
+    <option value="">Selecione</option>
+    <option th:each="categoria : ${categorias}"
+            th:value="${categoria}"
+            th:text="${categoria.descricao}">
+    </option>
+</select>
+
+<label for="precoCusto">Preço de custo</label>
+<input id="precoCusto" th:field="*{precoCusto}" type="number" step="0.01" min="0">
+
+<label for="precoVenda">Preço de venda</label>
+<input id="precoVenda" th:field="*{precoVenda}" type="number" step="0.01" min="0.01">
+
+<label for="estoqueMinimo">Estoque mínimo</label>
+<input id="estoqueMinimo" th:field="*{estoqueMinimo}" type="number" min="0">
+
+<label>
+    <input th:field="*{perecivel}" type="checkbox" style="width:auto">
+    Perecível
+</label>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <p><a th:href="@{/gerente/produtos}">Voltar</a></p>
+    </div>
+</main>
+</body>
+</html>

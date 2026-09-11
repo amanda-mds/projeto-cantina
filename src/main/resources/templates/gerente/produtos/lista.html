@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Produtos</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1>Produtos</h1>
+        <div class="alert alert-success" th:if="${sucesso}" th:text="${sucesso}"></div>
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <a class="btn" th:href="@{/gerente/produtos/novo}">Novo produto</a>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Ativo</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="produto : ${produtos}">
+                <td th:text="${produto.nome}"></td>
+                <td th:text="${produto.categoria.descricao}"></td>
+                <td th:text="${'R$ ' + #numbers.formatDecimal(produto.precoVenda, 1, 2)}"></td>
+                <td th:text="${produto.estoqueAtual}"></td>
+                <td th:text="${produto.ativo ? 'Sim' : 'Não'}"></td>
+                <td>
+                    <a class="btn" th:href="@{/gerente/produtos/{id}/editar(id=${produto.id})}">Editar</a>
+                    <a class="btn btn-secondary" th:href="@{/gerente/estoque/{id}(id=${produto.id})}">Estoque</a>
+                    <form class="inline-form"
+                          th:action="@{/gerente/produtos/{id}/status(id=${produto.id})}"
+                          method="post">
+                        <input type="hidden" name="ativo" th:value="${!produto.ativo}">
+                        <button type="submit" th:text="${produto.ativo ? 'Desativar' : 'Ativar'}"></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p><a th:href="@{/gerente}">Voltar</a></p>
+    </div>
+</main>
+</body>
+</html>

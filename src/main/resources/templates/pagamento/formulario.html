@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Pagamento</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1>Pagamento</h1>
+
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <p th:text="${'Pedido #' + pedido.id}"></p>
+        <p class="price"
+           th:text="${'Total: R$ ' + #numbers.formatDecimal(pedido.valorTotal, 1, 2)}"></p>
+
+        <form th:action="@{/pagamento/pedido/{id}(id=${pedido.id})}" method="post">
+            <label for="formaPagamento">Forma de pagamento</label>
+            <select id="formaPagamento" name="formaPagamento" required>
+                <option value="">Selecione</option>
+                <option th:each="forma : ${formasPagamento}"
+                        th:value="${forma}"
+                        th:text="${forma.descricao}">
+                </option>
+            </select>
+
+            <button type="submit">Iniciar pagamento</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

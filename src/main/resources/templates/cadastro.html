@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Cadastro - APPetite</title>
+</head>
+<body>
+<main class="auth">
+    <div class="card">
+        <h1>Criar conta</h1>
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <form th:action="@{/cadastro}" th:object="${usuario}" method="post">
+            <label for="nome">Nome</label>
+            <input id="nome" th:field="*{nome}" type="text">
+            <small th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></small>
+
+            <label for="email">E-mail</label>
+            <input id="email" th:field="*{email}" type="email">
+            <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+
+            <label for="telefone">Telefone</label>
+            <input id="telefone" th:field="*{telefone}" type="text">
+            <small th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></small>
+
+            <label for="senha">Senha</label>
+            <input id="senha" th:field="*{senha}" type="password">
+            <small th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></small>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <p><a th:href="@{/login}">Já tenho uma conta</a></p>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title>Novo funcionário</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h1>Novo funcionário</h1>
+
+        <div class="alert alert-error" th:if="${erro}" th:text="${erro}"></div>
+
+        <form th:action="@{/gerente/usuarios/novo}" th:object="${usuario}" method="post">
+            <label>Nome</label>
+            <input th:field="*{nome}" type="text">
+
+            <label>E-mail</label>
+            <input th:field="*{email}" type="email">
+
+            <label>Telefone</label>
+            <input th:field="*{telefone}" type="text">
+
+            <label>Senha</label>
+            <input th:field="*{senha}" type="password">
+
+            <label>Tipo</label>
+            <select name="tipoUsuario" required>
+                <option th:each="tipo : ${tiposFuncionario}"
+                        th:value="${tipo}"
+                        th:text="${tipo.descricao}">
+                </option>
+            </select>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <p><a th:href="@{/gerente/usuarios}">Voltar</a></p>
+    </div>
+</main>
+</body>
+</html>
